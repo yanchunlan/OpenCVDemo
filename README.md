@@ -1,6 +1,6 @@
 # OpenCVDemo
 
-练习OpenCV的demo
+OpenCV的demo
 
 ### plugin
 - AndroidStudio : 3.5.2
@@ -18,9 +18,14 @@
 3. 配置cmake环境支持OpenCV
 
 ### 原理
-
-    bitmap2Mat: Bitmap -> Pixel -> DesMat 
-    mat2Bitmap: Bitmap -> Pixel -> DesMat ; srcMat -> desMat
+    
+    工具类：
+        bitmap2Mat: Bitmap -> Pixel -> DesMat 
+        mat2Bitmap: Bitmap -> Pixel -> DesMat ; srcMat -> desMat
+    常规处理流程：
+        输入 -> bitmap -> mat -> 针对mat对rgba进行操作 -> bitmap -> 输出
+        
+    
     
 ### 笔记
 1. 滤镜
