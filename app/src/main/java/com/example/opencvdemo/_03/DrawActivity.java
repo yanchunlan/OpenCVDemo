@@ -1,4 +1,4 @@
-package com.example.opencvdemo._01;
+package com.example.opencvdemo._03;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,32 +10,45 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.opencvdemo.NativeUtils;
 import com.example.opencvdemo.R;
 
-public class GrayActivity extends AppCompatActivity {
+public class DrawActivity extends AppCompatActivity {
 
     private ImageView mImageView1;
     private ImageView mImageView2;
     private ImageView mImageView3;
+    private ImageView mImageView4;
+    private ImageView mImageView5;
+    private ImageView mImageView6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gray);
+        setContentView(R.layout.activity_draw);
         initView();
         initData();
-    }
-
-    private void initData() {
-        mImageView1.setImageResource(R.drawable.ic);
-        mImageView2.setImageBitmap(BitmapUtils.gray(getBitmap()));
-        Bitmap bitmap3 = getBitmap();
-        NativeUtils.gray(bitmap3);
-        mImageView3.setImageBitmap(bitmap3);
     }
 
     private void initView() {
         mImageView1 = (ImageView) findViewById(R.id.imageView1);
         mImageView2 = (ImageView) findViewById(R.id.imageView2);
         mImageView3 = (ImageView) findViewById(R.id.imageView3);
+        mImageView4 = (ImageView) findViewById(R.id.imageView4);
+        mImageView5 = (ImageView) findViewById(R.id.imageView5);
+        mImageView6 = (ImageView) findViewById(R.id.imageView6);
+    }
+
+
+    private void initData() {
+        mImageView1.setImageResource(R.drawable.ic);
+
+        Bitmap bitmap2 = getBitmap();
+        NativeUtils.draw(bitmap2);
+        mImageView2.setImageBitmap(bitmap2);
+
+        Bitmap bitmap3 = getBitmap();
+        NativeUtils.zeros(bitmap3);
+        mImageView3.setImageBitmap(bitmap3);
+
+
     }
 
     private Bitmap getBitmap() {

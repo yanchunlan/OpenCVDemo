@@ -7,7 +7,7 @@
 - Gradle : 5.4.1
 - OpenCV 4.1.0
 
-### Environment
+### 配置OpenCv环境
 1. [下载android版本OpenCV](https://github.com/opencv/opencv/releases)
 
 2. 复制 opencv-4.1.0-android-sdk.zip\OpenCV-android-sdk\sdk\native\jni
@@ -16,7 +16,13 @@
    中相应的so复制到jniLibs里面
 
 3. 配置cmake环境支持OpenCV
-### note
+
+### 原理
+
+    bitmap2Mat: Bitmap -> Pixel -> DesMat 
+    mat2Bitmap: Bitmap -> Pixel -> DesMat ; srcMat -> desMat
+    
+### 笔记
 1. 滤镜
 2. Mat对象与图像混合
 3. 图像的绘制与卷积
