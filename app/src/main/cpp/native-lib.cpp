@@ -6,6 +6,9 @@
 #include <opencv2/highgui/highgui_c.h>
 #include "utils.h"
 
+/**
+ * 一般此处的异常都是宽高，通道数量不一致导致的异常
+ */
 void JNU_ThrowByName(JNIEnv *env, const char *name, const char *msg) {
     // 查找异常类
     jclass cls = env->FindClass(name);
@@ -262,6 +265,111 @@ JNIEXPORT void JNICALL
 Java_com_example_opencvdemo_NativeUtils_zeros(JNIEnv *env, jclass clazz, jobject bitmap) {
     Mat src = bitmap2Mat(env, bitmap);
     Mat dest;
+    dest = Mat::zeros(src.size(), src.type());
+    int rows = src.rows;
+    int cols = (src.cols - 1) * src.channels();
+    int channels = src.channels();
+    LOGE("bitmap：rows：%d,cols：%d,channels:%d", rows, cols, channels);
+    for (int row = 1; row < rows - 1; row++) {
+        //获取上一行
+        uchar *previous = src.ptr<uchar>(row - 1);
+        //获取当前行
+        uchar *current = src.ptr<uchar>(row);
+        //下一行
+        uchar *next = src.ptr<uchar>(row + 1);
+        //输出
+        uchar *output = dest.ptr<uchar>(row);
+        for (int col = channels; col < cols; col++) {
+            output[col] = saturate_cast<uchar>(5 * current[col-channels] -
+                                               (previous[col] + next[col] + current[col - channels] + current[col + channels]));
+        }
+    }
+    mat2bitmap(env, dest, bitmap);
+}
 
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_opencvdemo_NativeUtils_blur(JNIEnv *env, jclass clazz, jobject bitmap) {
+    Mat src = bitmap2Mat(env, bitmap);
+    Mat dest;
+    //均值模糊
+    //Size(w,h),只能是基数
+    blur(src,dest,Size(15,15),Point(-1,-1));
+    mat2bitmap(env, dest, bitmap);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_opencvdemo_NativeUtils_gaussianBlur(JNIEnv *env, jclass clazz, jobject bitmap) {
+    Mat src = bitmap2Mat(env, bitmap);
+    Mat dest;
+    //高斯模糊 保留了一些轮廓
+    //第四个参数sigmaX
+    GaussianBlur(src,dest,Size(15,15),0);
+    mat2bitmap(env, dest, bitmap);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_opencvdemo_NativeUtils_medianBlur(JNIEnv *env, jclass clazz, jobject bitmap) {
+    Mat src = bitmap2Mat(env, bitmap);
+    Mat dest;
+    medianBlur(src,dest,3);
+    mat2bitmap(env, dest, bitmap);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_opencvdemo_NativeUtils_medianBlur2(JNIEnv *env, jclass clazz, jobject bitmap) {
+   /* Mat src = bitmap2Mat(env, bitmap);
+    Mat dest;
+    medianBlur(src,dest,7);
+
+    //掩膜
+    Mat final;
+    Mat kernel;
+    kernel = (Mat_<char>(3, 3) << 0, -1, 0, -1, 5, -1, 0, -1, 0);
+    filter2D(dest,final,dest.depth(),kernel);
+
+    mat2bitmap(env, final, bitmap);
+    JNU_ThrowByName(env,"java/lang/Exception","medianBlur2 == null");*/
+
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_opencvdemo_NativeUtils_bilateralFilter(JNIEnv *env, jclass clazz, jobject bitmap) {
+   /* Mat src = bitmap2Mat(env, bitmap);
+    Mat dest;
+    *//**
+     * 主要用来图片美容,基于高斯模糊，高斯模糊保留轮廓并不强,双边保留轮廓信息会增强，基于高斯再增加像素差
+     *//*
+    bilateralFilter(src,dest,3,1,2);
+    mat2bitmap(env, dest, bitmap);
+    JNU_ThrowByName(env,"java/lang/Exception","bilateralFilter == null");*/
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_opencvdemo_NativeUtils_erode(JNIEnv *env, jclass clazz, jobject bitmap) {
+    Mat src = bitmap2Mat(env, bitmap);
+    Mat dest;
+    //创建一个kernel
+    Mat kernel = getStructuringElement(MORPH_RECT, Size(15, 15));
+    erode(src, dest, kernel);
+    /*namedWindow("out_image");
+    //动态控制
+    createTrackbar("Trackbar", "out_image", &element_size, max_size,trackbarCallback);*/
+    mat2bitmap(env, dest, bitmap);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_opencvdemo_NativeUtils_dilate(JNIEnv *env, jclass clazz, jobject bitmap) {
+    Mat src = bitmap2Mat(env, bitmap);
+    Mat dest;
+    //创建一个kernel
+    Mat kernel = getStructuringElement(MORPH_RECT, Size(15, 15));
+    dilate(src, dest, kernel);
     mat2bitmap(env, dest, bitmap);
 }

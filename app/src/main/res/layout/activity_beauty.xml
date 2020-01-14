@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="裁剪矩形框:" />
+            android:text="系统方法-中值滤波+掩膜:" />
 
         <ImageView
             android:id="@+id/imageView2"
@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="系统置灰:" />
+            android:text="双边滤波-美容:" />
 
         <ImageView
             android:id="@+id/imageView3"
@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="遍历置灰:" />
+            android:text="腐蚀-最小值:" />
 
         <ImageView
             android:id="@+id/imageView4"
@@ -69,7 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="添加水印:" />
+            android:text="膨胀-最大值:" />
 
         <ImageView
             android:id="@+id/imageView5"
@@ -78,17 +78,5 @@
             android:layout_marginLeft="10dp"
             tools:src="@drawable/ic" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="添加滤镜:" />
-
-        <ImageView
-            android:id="@+id/imageView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            tools:src="@drawable/ic" />
     </LinearLayout>
 </ScrollView>

@@ -48,7 +48,17 @@ public class DrawActivity extends AppCompatActivity {
         NativeUtils.zeros(bitmap3);
         mImageView3.setImageBitmap(bitmap3);
 
+        Bitmap bitmap4 = getBitmap();
+        NativeUtils.blur(bitmap4);
+        mImageView4.setImageBitmap(bitmap4);
 
+        Bitmap bitmap5 = getBitmap();
+        NativeUtils.gaussianBlur(bitmap5);
+        mImageView5.setImageBitmap(bitmap5);
+
+        Bitmap bitmap6 = getBitmap();
+        NativeUtils.medianBlur(bitmap6);
+        mImageView6.setImageBitmap(bitmap6);
     }
 
     private Bitmap getBitmap() {

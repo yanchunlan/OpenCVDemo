@@ -37,13 +37,27 @@ public class NativeUtils {
 
 
     // -------------  绘制 start  --------------
+    // 图形绘制，直线，矩形，椭圆，圆，填充，文字
     public static native void draw(Bitmap bitmap);
+    // 卷积操作
     public static native void zeros(Bitmap bitmap);
-
-
+    // 系统的方法 - 均值模糊
+    public static native void blur(Bitmap bitmap);
+    // 系统的方法 - 高斯模糊
+    public static native void gaussianBlur(Bitmap bitmap);
+    // 系统的方法 - 中值模糊（对所有考虑的点进行排序，取中间的值）
+    public static native void medianBlur(Bitmap bitmap);
     // -------------  绘制 end  --------------
 
 
-
-
+    // -------------  美容 start  --------------
+    // 系统的方法 - 中值模糊+掩膜
+    public static native void medianBlur2(Bitmap bitmap);
+    // 美容，高斯模糊+双边保留轮廓
+    public static native void bilateralFilter(Bitmap bitmap);
+    // 处理黑白图片，erode：腐蚀,最小值
+    public static native void erode(Bitmap bitmap);
+    // 处理黑白图片，dilate：膨胀，最大值
+    public static native void dilate(Bitmap bitmap);
+    // -------------  美容 end  --------------
 }
