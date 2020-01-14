@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="裁剪矩形框:" />
+            android:text="形态学操作:" />
 
         <ImageView
             android:id="@+id/imageView2"
@@ -43,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="系统置灰:" />
+            android:text="验证码识别（先闭后开）:" />
 
         <ImageView
             android:id="@+id/imageView3"
@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="遍历置灰:" />
+            android:text="验证码识别（先彩色再黑白）:" />
 
         <ImageView
             android:id="@+id/imageView4"
@@ -69,7 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="添加水印:" />
+            android:text="提取水平线/垂直线:" />
 
         <ImageView
             android:id="@+id/imageView5"
@@ -82,10 +82,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="添加滤镜:" />
+            android:text="上采样pyrUp:" />
 
         <ImageView
             android:id="@+id/imageView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            tools:src="@drawable/ic" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="降采样pyrDown:" />
+
+        <ImageView
+            android:id="@+id/imageView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"

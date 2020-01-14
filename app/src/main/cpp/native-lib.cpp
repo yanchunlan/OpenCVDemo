@@ -190,7 +190,7 @@ Java_com_example_opencvdemo_NativeUtils_addLogo(JNIEnv *env, jclass clazz, jobje
     //不适合加水印，只适合图片混合
     addWeighted(srcClip, 0, logoMat, 1, 0, srcClip);
     mat2bitmap(env, src, src_bitmap);
-    JNU_ThrowByName(env,"java/lang/Exception","addWeighted == null");
+    JNU_ThrowByName(env, "java/lang/Exception", "addWeighted == null");
 }
 
 /**
@@ -226,7 +226,7 @@ Java_com_example_opencvdemo_NativeUtils_filter(JNIEnv *env, jclass clazz, jobjec
         }
     }
     mat2bitmap(env, src, bitmap);
-    JNU_ThrowByName(env,"java/lang/Exception","addWeighted == null");
+    JNU_ThrowByName(env, "java/lang/Exception", "addWeighted == null");
 }
 
 extern "C"
@@ -254,10 +254,10 @@ Java_com_example_opencvdemo_NativeUtils_draw(JNIEnv *env, jclass clazz, jobject 
 
     const Point *pts[] = {pt[0]};
     int nps[] = {4};
-    fillPoly(src, pts, nps, 1, Scalar(255, 0, 0),8);
+    fillPoly(src, pts, nps, 1, Scalar(255, 0, 0), 8);
 
     //文字putText LINE_AA抗锯齿
-    putText(src,"OpenCV",Point(150,150),CV_FONT_BLACK,1,Scalar(255,255,0),1,LINE_AA);
+    putText(src, "OpenCV", Point(150, 150), CV_FONT_BLACK, 1, Scalar(255, 255, 0), 1, LINE_AA);
 }
 
 extern "C"
@@ -280,8 +280,9 @@ Java_com_example_opencvdemo_NativeUtils_zeros(JNIEnv *env, jclass clazz, jobject
         //输出
         uchar *output = dest.ptr<uchar>(row);
         for (int col = channels; col < cols; col++) {
-            output[col] = saturate_cast<uchar>(5 * current[col-channels] -
-                                               (previous[col] + next[col] + current[col - channels] + current[col + channels]));
+            output[col] = saturate_cast<uchar>(5 * current[col - channels] -
+                                               (previous[col] + next[col] +
+                                                current[col - channels] + current[col + channels]));
         }
     }
     mat2bitmap(env, dest, bitmap);
@@ -294,7 +295,7 @@ Java_com_example_opencvdemo_NativeUtils_blur(JNIEnv *env, jclass clazz, jobject 
     Mat dest;
     //均值模糊
     //Size(w,h),只能是基数
-    blur(src,dest,Size(15,15),Point(-1,-1));
+    blur(src, dest, Size(15, 15), Point(-1, -1));
     mat2bitmap(env, dest, bitmap);
 }
 
@@ -305,7 +306,7 @@ Java_com_example_opencvdemo_NativeUtils_gaussianBlur(JNIEnv *env, jclass clazz, 
     Mat dest;
     //高斯模糊 保留了一些轮廓
     //第四个参数sigmaX
-    GaussianBlur(src,dest,Size(15,15),0);
+    GaussianBlur(src, dest, Size(15, 15), 0);
     mat2bitmap(env, dest, bitmap);
 }
 
@@ -314,34 +315,34 @@ JNIEXPORT void JNICALL
 Java_com_example_opencvdemo_NativeUtils_medianBlur(JNIEnv *env, jclass clazz, jobject bitmap) {
     Mat src = bitmap2Mat(env, bitmap);
     Mat dest;
-    medianBlur(src,dest,3);
+    medianBlur(src, dest, 3);
     mat2bitmap(env, dest, bitmap);
 }
 
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_example_opencvdemo_NativeUtils_medianBlur2(JNIEnv *env, jclass clazz, jobject bitmap) {
-   /* Mat src = bitmap2Mat(env, bitmap);
-    Mat dest;
-    medianBlur(src,dest,7);
+    /* Mat src = bitmap2Mat(env, bitmap);
+     Mat dest;
+     medianBlur(src,dest,7);
 
-    //掩膜
-    Mat final;
-    Mat kernel;
-    kernel = (Mat_<char>(3, 3) << 0, -1, 0, -1, 5, -1, 0, -1, 0);
-    filter2D(dest,final,dest.depth(),kernel);
+     //掩膜
+     Mat final;
+     Mat kernel;
+     kernel = (Mat_<char>(3, 3) << 0, -1, 0, -1, 5, -1, 0, -1, 0);
+     filter2D(dest,final,dest.depth(),kernel);
 
-    mat2bitmap(env, final, bitmap);
-    JNU_ThrowByName(env,"java/lang/Exception","medianBlur2 == null");*/
+     mat2bitmap(env, final, bitmap);
+     JNU_ThrowByName(env,"java/lang/Exception","medianBlur2 == null");*/
 
 }
 
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_example_opencvdemo_NativeUtils_bilateralFilter(JNIEnv *env, jclass clazz, jobject bitmap) {
-   /* Mat src = bitmap2Mat(env, bitmap);
-    Mat dest;
-    *//**
+    /* Mat src = bitmap2Mat(env, bitmap);
+     Mat dest;
+     *//**
      * 主要用来图片美容,基于高斯模糊，高斯模糊保留轮廓并不强,双边保留轮廓信息会增强，基于高斯再增加像素差
      *//*
     bilateralFilter(src,dest,3,1,2);
@@ -354,7 +355,6 @@ JNIEXPORT void JNICALL
 Java_com_example_opencvdemo_NativeUtils_erode(JNIEnv *env, jclass clazz, jobject bitmap) {
     Mat src = bitmap2Mat(env, bitmap);
     Mat dest;
-    //创建一个kernel
     Mat kernel = getStructuringElement(MORPH_RECT, Size(15, 15));
     erode(src, dest, kernel);
     /*namedWindow("out_image");
@@ -368,8 +368,129 @@ JNIEXPORT void JNICALL
 Java_com_example_opencvdemo_NativeUtils_dilate(JNIEnv *env, jclass clazz, jobject bitmap) {
     Mat src = bitmap2Mat(env, bitmap);
     Mat dest;
-    //创建一个kernel
     Mat kernel = getStructuringElement(MORPH_RECT, Size(15, 15));
     dilate(src, dest, kernel);
+    mat2bitmap(env, dest, bitmap);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_opencvdemo_NativeUtils_morphologyEx(JNIEnv *env, jclass clazz, jobject bitmap) {
+    Mat src = bitmap2Mat(env, bitmap);
+    Mat dest;
+    Mat kernel = getStructuringElement(MORPH_RECT, Size(15, 15));
+    /**
+        CV_MOP_OPEN 开图像:先腐蚀后膨胀
+        CV_MOP_CLOSE 闭图像:先膨胀后腐蚀
+        CV_MOP_GRADIENT 梯度:膨胀 - 腐蚀
+        CV_MOP_TOPHAT 顶帽:原图像- 开图像【开图像是，先腐蚀后膨胀，所以会得到讲小白色
+                            方块去掉的图，之后用原图像去减得到的图像，实际得到的就是小方块图像】
+        CV_MOP_BLACKHAT 黑帽：闭图像 - 原图像【闭图像会去先膨胀后腐蚀，就是将原来的图片
+                            中的黑点去填充为白色，再减去原图就剩下白色的圆圈】
+    */
+    morphologyEx(src, dest, CV_MOP_OPEN, kernel);
+    mat2bitmap(env, dest, bitmap);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_opencvdemo_NativeUtils_morphologyEx2(JNIEnv *env, jclass clazz, jobject bitmap) {
+    Mat src = bitmap2Mat(env, bitmap);
+    Mat dest;
+
+    // 方法一、先闭图像后开图像
+    Mat final;
+    Mat kernel, kernel1;
+
+    kernel = getStructuringElement(MORPH_RECT, Size(3, 3));
+    morphologyEx(src, dest, CV_MOP_CLOSE, kernel);
+
+    kernel1 = getStructuringElement(MORPH_RECT, Size(5, 5));
+    morphologyEx(dest, final, CV_MOP_OPEN, kernel1);
+
+    mat2bitmap(env, final, bitmap);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_opencvdemo_NativeUtils_morphologyEx3(JNIEnv *env, jclass clazz, jobject bitmap) {
+    /*Mat src = bitmap2Mat(env, bitmap);
+    Mat dest;
+
+    // 方法二、彩色变成黑白再处理
+    // 1.变黑白
+    Mat gray;
+    cvtColor(src, gray, COLOR_BGR2GRAY);
+
+    // 2. 二值化,自动阀值
+    Mat binary;
+    adaptiveThreshold(gray, binary, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 15, 0);
+
+    // 3. 开图像
+    Mat kernel = getStructuringElement(MORPH_RECT, Size(3, 3));
+    morphologyEx(binary, dest, CV_MOP_OPEN, kernel);
+    // 4. 取反
+    bitwise_not(dest,dest);
+
+    mat2bitmap(env, dest, bitmap);*/
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_opencvdemo_NativeUtils_extractionLine(JNIEnv *env, jclass clazz, jobject bitmap) {
+    /*
+    Mat src = bitmap2Mat(env, bitmap);
+    Mat dest;
+
+    // 1.变黑白
+    Mat gray;
+    cvtColor(src, gray, COLOR_BGR2GRAY);
+
+    // 2. 二值化,自动阀值
+    Mat binary;
+    adaptiveThreshold(gray, binary, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 7, 0);
+
+    // 3. 开图像 (去除一些乱七八糟的杂点)
+    Mat kernel = getStructuringElement(MORPH_RECT, Size(5, 5));
+    morphologyEx(binary, dest, CV_MOP_OPEN, kernel);
+
+    // 4.中间连接的时候有黑色的小方块，改为白色，膨胀
+    kernel = getStructuringElement(MORPH_RECT, Size(7, 7));
+    dilate(dest, dest, kernel); // 膨胀，取最大
+    erode(dest, dest, kernel);// 腐蚀，取最小
+
+    // 5.取水平线
+    Mat level = getStructuringElement(MORPH_RECT, Size(src.cols / 16, 1));
+    erode(dest, dest, level);// 腐蚀，取最小，将不是水平线的变成黑色，
+    dilate(dest, dest, level);// 膨胀，取最大，不然线变短了
+
+    *//*
+     // 5.取垂直线
+    Mat level = getStructuringElement(MORPH_RECT, Size( 1,src.cols/16));
+    erode(dest,dest,level);// 腐蚀，取最小，将不是水平线的变成黑色，
+    dilate(dest,dest,level);// 膨胀，取最大，不然线变短了
+    *//*
+
+    mat2bitmap(env, dest, bitmap);
+    */
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_opencvdemo_NativeUtils_pyrUp(JNIEnv *env, jclass clazz, jobject bitmap) {
+    Mat src = bitmap2Mat(env, bitmap);
+    Mat dest;
+    // 预计算值
+    pyrUp(src, dest, Size(src.cols * 2, src.rows * 2));
+    mat2bitmap(env, dest, bitmap);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_opencvdemo_NativeUtils_pyrDown(JNIEnv *env, jclass clazz, jobject bitmap) {
+    Mat src = bitmap2Mat(env, bitmap);
+    Mat dest;
+    // 1.对图像进行高斯模糊 2.再过滤左右临近点
+    pyrDown(src, dest, Size(src.cols / 2, src.rows / 2));
     mat2bitmap(env, dest, bitmap);
 }

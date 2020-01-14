@@ -60,4 +60,21 @@ public class NativeUtils {
     // 处理黑白图片，dilate：膨胀，最大值
     public static native void dilate(Bitmap bitmap);
     // -------------  美容 end  --------------
+
+
+    // -------------  验证码识别 start  --------------
+    // 形体学操作:morphologyEx，仅仅学习
+    public static native void morphologyEx(Bitmap bitmap);
+    // 验证码识别
+    // 方法一: 先闭图像后开图像
+    public static native void morphologyEx2(Bitmap bitmap);
+    // 方法二：彩色变成黑白再处理
+    public static native void morphologyEx3(Bitmap bitmap);
+    // 提取水平线/垂直线
+    public static native void extractionLine(Bitmap bitmap);
+    // 上采样：pyrUp
+    public static native void pyrUp(Bitmap bitmap);
+    // 降采样：pyrDown
+    public static native void pyrDown(Bitmap bitmap);
+    // -------------  验证码识别 end  --------------
 }
