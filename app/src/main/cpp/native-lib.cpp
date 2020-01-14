@@ -494,3 +494,60 @@ Java_com_example_opencvdemo_NativeUtils_pyrDown(JNIEnv *env, jclass clazz, jobje
     pyrDown(src, dest, Size(src.cols / 2, src.rows / 2));
     mat2bitmap(env, dest, bitmap);
 }
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_opencvdemo_NativeUtils_filter2D_1robert(JNIEnv *env, jclass clazz,
+                                                         jobject bitmap) {
+    Mat src = bitmap2Mat(env, bitmap);
+    Mat dest;
+
+    Mat kernel;
+    kernel=(Mat_<int>(2,2)<<1,0,0,-1);
+    //depth:值是0-6，type进度的程度
+    // 矩阵中元素的一个通道的数据类型，
+    // 这个值和type是相关的。例如 type为 CV_16SC2，
+    // 一个2通道的16位的有符号整数。那么，depth则是CV_16S。depth也是一系列的预定义值，
+    //将type的预定义值去掉通道信息就是depth值:
+    //CV_8U用0表示 CV_8S用1表示 CV_16U用2表示 CV_16S用3表示 CV_32S用4表示 CV_32F用5表示 CV_64F用6表示
+    filter2D(src,dest,src.depth(),kernel);
+
+    mat2bitmap(env, dest, bitmap);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_opencvdemo_NativeUtils_filter2D_1soble_1left(JNIEnv *env, jclass clazz,
+                                                              jobject bitmap) {
+    Mat src = bitmap2Mat(env, bitmap);
+    //转成灰度图
+    Mat gray;
+    cvtColor(src,gray,COLOR_BGR2GRAY);
+    Mat dest;
+    Mat kernel;
+    kernel=(Mat_<int>(3,3)<<-1,0,1,-2,0,2,-1,0,1);
+
+    filter2D(gray,dest,src.depth(),kernel);
+    mat2bitmap(env, gray, bitmap);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_opencvdemo_NativeUtils_filter2D_1soble_1right(JNIEnv *env, jclass clazz,
+                                                               jobject bitmap) {
+    Mat src = bitmap2Mat(env, bitmap);
+    Mat dest;
+    Mat kernel;
+    kernel=(Mat_<int>(3,3)<<-1,-2,-1,0,0,0,1,2,1);
+
+    filter2D(src,dest,src.depth(),kernel);
+    mat2bitmap(env, dest, bitmap);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_opencvdemo_NativeUtils_filter2D_1laplace(JNIEnv *env, jclass clazz,
+                                                          jobject bitmap) {
+
+
+}

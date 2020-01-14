@@ -41,19 +41,19 @@ public class CustomActivity extends AppCompatActivity {
         mImageView1.setImageResource(R.drawable.ic);
 
         Bitmap bitmap2 = getBitmap();
-        NativeUtils.morphologyEx(bitmap2);
+        NativeUtils.filter2D_robert(bitmap2);
         mImageView2.setImageBitmap(bitmap2);
 
         Bitmap bitmap3 = getBitmap();
-        NativeUtils.morphologyEx(bitmap3);
+        NativeUtils.filter2D_soble_left(bitmap3);
         mImageView3.setImageBitmap(bitmap3);
 
         Bitmap bitmap4 = getBitmap();
-        NativeUtils.morphologyEx(bitmap4);
+        NativeUtils.filter2D_soble_right(bitmap4);
         mImageView4.setImageBitmap(bitmap4);
 
         Bitmap bitmap5 = getBitmap();
-        NativeUtils.morphologyEx(bitmap5);
+        NativeUtils.filter2D_soble_right(bitmap5);
         mImageView5.setImageBitmap(bitmap5);
     }
 

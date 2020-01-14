@@ -77,4 +77,18 @@ public class NativeUtils {
     // 降采样：pyrDown
     public static native void pyrDown(Bitmap bitmap);
     // -------------  验证码识别 end  --------------
+
+
+    // -------------  自定义线性滤波 start  --------------
+    // Robert算子
+    public static native void filter2D_robert(Bitmap bitmap);
+    // 左边算子
+    public static native void filter2D_soble_left(Bitmap bitmap);
+    // 右边算子
+    public static native void filter2D_soble_right(Bitmap bitmap);
+    // 拉普拉斯算子
+    public static native void filter2D_laplace(Bitmap bitmap);
+
+
+    // -------------  自定义线性滤波 end  --------------
 }
