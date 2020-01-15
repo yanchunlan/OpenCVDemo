@@ -417,6 +417,7 @@ Java_com_example_opencvdemo_NativeUtils_morphologyEx3(JNIEnv *env, jclass clazz,
     /*Mat src = bitmap2Mat(env, bitmap);
     Mat dest;
 
+    // todo 通道不一样导致有异常出现
     // 方法二、彩色变成黑白再处理
     // 1.变黑白
     Mat gray;
@@ -442,6 +443,7 @@ Java_com_example_opencvdemo_NativeUtils_extractionLine(JNIEnv *env, jclass clazz
     Mat src = bitmap2Mat(env, bitmap);
     Mat dest;
 
+    // todo 通道不一样导致有异常出现
     // 1.变黑白
     Mat gray;
     cvtColor(src, gray, COLOR_BGR2GRAY);
@@ -503,14 +505,19 @@ Java_com_example_opencvdemo_NativeUtils_filter2D_1robert(JNIEnv *env, jclass cla
     Mat dest;
 
     Mat kernel;
-    kernel=(Mat_<int>(2,2)<<1,0,0,-1);
+    kernel = (Mat_<int>(2, 2) << 1, 0, 0, -1);
+    /*
+    * filter2D:把kernel(卷积核)放到我们图像矩阵之上，求锚点周围覆盖像素乘积之和
+    * (包括锚点)，用来计算锚点的像素值覆盖图片下面的像素值，称为卷积
+    */
+
     //depth:值是0-6，type进度的程度
     // 矩阵中元素的一个通道的数据类型，
     // 这个值和type是相关的。例如 type为 CV_16SC2，
     // 一个2通道的16位的有符号整数。那么，depth则是CV_16S。depth也是一系列的预定义值，
     //将type的预定义值去掉通道信息就是depth值:
     //CV_8U用0表示 CV_8S用1表示 CV_16U用2表示 CV_16S用3表示 CV_32S用4表示 CV_32F用5表示 CV_64F用6表示
-    filter2D(src,dest,src.depth(),kernel);
+    filter2D(src, dest, src.depth(), kernel);
 
     mat2bitmap(env, dest, bitmap);
 }
@@ -519,16 +526,22 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_com_example_opencvdemo_NativeUtils_filter2D_1soble_1left(JNIEnv *env, jclass clazz,
                                                               jobject bitmap) {
-    Mat src = bitmap2Mat(env, bitmap);
-    //转成灰度图
-    Mat gray;
-    cvtColor(src,gray,COLOR_BGR2GRAY);
-    Mat dest;
-    Mat kernel;
-    kernel=(Mat_<int>(3,3)<<-1,0,1,-2,0,2,-1,0,1);
-
-    filter2D(gray,dest,src.depth(),kernel);
-    mat2bitmap(env, gray, bitmap);
+//    Mat src = bitmap2Mat(env, bitmap);
+//    //转成灰度图
+//    Mat gray;
+//
+//    // todo 通道不一样导致有异常出现
+//    if (src.channels() == 3) {
+//        cvtColor(src, gray, COLOR_BGR2GRAY);
+//    } else if (src.channels() == 4) {
+//        cvtColor(src, gray, COLOR_BGRA2GRAY);
+//    }
+//    Mat dest;
+//    Mat kernel;
+//    kernel = (Mat_<int>(3, 3) << -1, 0, 1, -2, 0, 2, -1, 0, 1);
+//
+//    filter2D(gray, dest, src.depth(), kernel);
+//    mat2bitmap(env, gray, bitmap);
 }
 
 extern "C"
@@ -538,9 +551,9 @@ Java_com_example_opencvdemo_NativeUtils_filter2D_1soble_1right(JNIEnv *env, jcla
     Mat src = bitmap2Mat(env, bitmap);
     Mat dest;
     Mat kernel;
-    kernel=(Mat_<int>(3,3)<<-1,-2,-1,0,0,0,1,2,1);
+    kernel = (Mat_<int>(3, 3) << -1, -2, -1, 0, 0, 0, 1, 2, 1);
 
-    filter2D(src,dest,src.depth(),kernel);
+    filter2D(src, dest, src.depth(), kernel);
     mat2bitmap(env, dest, bitmap);
 }
 
@@ -548,6 +561,54 @@ extern "C"
 JNIEXPORT void JNICALL
 Java_com_example_opencvdemo_NativeUtils_filter2D_1laplace(JNIEnv *env, jclass clazz,
                                                           jobject bitmap) {
+    Mat src = bitmap2Mat(env, bitmap);
+    Mat dest;
+    Mat kernel;
+    kernel = (Mat_<int>(3, 3) << 0, -1, 0, -1, 4, -1, 0, -1, 0);
 
+    filter2D(src, dest, src.depth(), kernel);
+    mat2bitmap(env, dest, bitmap);
+
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_opencvdemo_NativeUtils_filter2D_1custom(JNIEnv *env, jclass clazz,
+                                                         jobject bitmap) {
+    Mat src = bitmap2Mat(env, bitmap);
+    Mat dest;
+    /*
+    //系统的模糊
+    Mat blur_m;
+    blur(src,blur_m,Size(5,5));
+    */
+    //自定义卷积实现模糊
+    int size = 5;
+    Mat kernel;
+    //ones全是1
+    kernel = Mat::ones(size, size, CV_32F) / (size * size);
+    filter2D(src, dest, src.depth(), kernel);
+    mat2bitmap(env, dest, bitmap);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_example_opencvdemo_NativeUtils_threshold(JNIEnv *env, jclass clazz, jobject bitmap) {
+//    Mat src = bitmap2Mat(env, bitmap);
+//    // todo 通道不一样导致有异常出现
+//    Mat gray;
+//    cvtColor(src, gray, COLOR_BGR2GRAY);
+//    Mat dest;
+//    /**
+//     * THRESH_BINARY: 当前值大于thresh，则当前像素取maxval，否则取最小值默认是0
+//     * THRESH_BINARY_INV:如果当前值大于thresh，则当前像素取最小值，否则取maxval
+//     * THRESH_TRUNC:如果当前值大于thresh，则当前像素取thresh，否则取原来的值
+//     * THRESH_TOZERO:如果当前值大于thresh，则当前像素取原来的值，否则取最小值
+//     * THRESH_TOZERO_INV:如果当前值大于thresh，则当前像素取最小值，否则取原来的值
+//     * THRESH_OTSU:自动阈值:取每个像素点(整个图像)计算一个thresh值
+//     * THRESH_TRIANGLE:自动阈值:取每个像素点(整个图像)计算一个thresh值
+//     */
+//    threshold(gray, dest, 100, 255, THRESH_BINARY);
+//    mat2bitmap(env, dest, bitmap);
 
 }

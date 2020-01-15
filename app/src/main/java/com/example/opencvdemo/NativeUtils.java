@@ -88,7 +88,9 @@ public class NativeUtils {
     public static native void filter2D_soble_right(Bitmap bitmap);
     // 拉普拉斯算子
     public static native void filter2D_laplace(Bitmap bitmap);
-
-
+    // 自定义卷积实现模糊
+    public static native void filter2D_custom(Bitmap bitmap);
+    // 二值化
+    public static native void threshold(Bitmap bitmap);
     // -------------  自定义线性滤波 end  --------------
 }

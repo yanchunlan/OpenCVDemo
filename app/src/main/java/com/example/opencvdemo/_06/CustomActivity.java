@@ -18,6 +18,7 @@ public class CustomActivity extends AppCompatActivity {
     private ImageView mImageView4;
     private ImageView mImageView5;
     private ImageView mImageView6;
+    private ImageView mImageView7;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,7 @@ public class CustomActivity extends AppCompatActivity {
         mImageView4 = (ImageView) findViewById(R.id.imageView4);
         mImageView5 = (ImageView) findViewById(R.id.imageView5);
         mImageView6 = (ImageView) findViewById(R.id.imageView6);
+        mImageView7 = (ImageView) findViewById(R.id.imageView7);
     }
 
 
@@ -53,8 +55,16 @@ public class CustomActivity extends AppCompatActivity {
         mImageView4.setImageBitmap(bitmap4);
 
         Bitmap bitmap5 = getBitmap();
-        NativeUtils.filter2D_soble_right(bitmap5);
+        NativeUtils.filter2D_laplace(bitmap5);
         mImageView5.setImageBitmap(bitmap5);
+
+        Bitmap bitmap6 = getBitmap();
+        NativeUtils.filter2D_custom(bitmap6);
+        mImageView6.setImageBitmap(bitmap6);
+
+        Bitmap bitmap7 = getBitmap();
+        NativeUtils.threshold(bitmap7);
+        mImageView7.setImageBitmap(bitmap7);
     }
 
     private Bitmap getBitmap() {
